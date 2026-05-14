@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+users.json
+remember_me.json
+.venv/
+*.egg-info/
+.pytest_cache/

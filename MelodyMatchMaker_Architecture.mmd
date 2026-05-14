@@ -1,0 +1,67 @@
+flowchart TD
+    subgraph "Data Sources"
+        HighPop[📊 high_popularity_spotify_data.csv<br/>Popular tracks dataset]
+        LowPop[📊 low_popularity_spotify_data.csv<br/>Undiscovered gems dataset]
+    end
+
+    subgraph "Processing Layer"
+        LoadData[📥 Data Loading<br/>pandas.read_csv()]
+        CleanData[🧹 Data Cleaning<br/>Handle missing values, duplicates]
+        ExtractFeatures[🎼 Feature Extraction<br/>9 audio features: danceability,<br/>energy, key, loudness, mode,<br/>speechiness, acousticness,<br/>instrumentalness, valence]
+        Normalize[📏 Normalization<br/>StandardScaler from sklearn]
+    end
+
+    subgraph "Indexing Layer"
+        BallTree[🌳 Ball Tree Construction<br/>sklearn.neighbors.BallTree<br/>Precomputed index for fast NN search]
+        CacheIndex[💾 Index Caching<br/>@st.cache_resource decorator<br/>Persistent across app restarts]
+    end
+
+    subgraph "Recommendation Engine"
+        UserInput[👤 User Selection<br/>Track from dropdown]
+        KNN[🔍 K-Nearest Neighbors<br/>BallTree.query(k=6)<br/>Find similar tracks]
+        HybridScore[⚖️ Hybrid Scoring<br/>70% similarity + 30% popularity<br/>Weighted combination]
+        RankResults[📊 Ranking & Selection<br/>Top 5 recommendations]
+    end
+
+    subgraph "UI Layer"
+        SearchBar[🔍 Search Interface<br/>Filter by title/artist/album/genre]
+        TrackDisplay[📱 Track Information<br/>Artist, album, genre, popularity]
+        SpotifyEmbed[🎧 Spotify Player<br/>30-second preview embeds]
+        PerformanceMetrics[⚡ Performance Display<br/>Query time, recommendation count]
+    end
+
+    subgraph "External Services"
+        SpotifyAPI[🎵 Spotify Web API<br/>Track URIs for embedding]
+    end
+
+    subgraph "Deployment Options"
+        LocalDev[💻 Local Development<br/>streamlit run app.py]
+        CloudDeploy[☁️ Cloud Deployment<br/>Streamlit Cloud, Heroku, etc.]
+        Docker[🐳 Containerized<br/>Docker deployment]
+    end
+
+    HighPop --> LoadData
+    LowPop --> LoadData
+    LoadData --> CleanData
+    CleanData --> ExtractFeatures
+    ExtractFeatures --> Normalize
+    Normalize --> BallTree
+    BallTree --> CacheIndex
+
+    UserInput --> KNN
+    KNN --> HybridScore
+    HybridScore --> RankResults
+    RankResults --> TrackDisplay
+    TrackDisplay --> SpotifyEmbed
+    SpotifyEmbed --> SpotifyAPI
+
+    SearchBar --> UserInput
+    RankResults --> PerformanceMetrics
+
+    LocalDev --> CloudDeploy
+    CloudDeploy --> Docker
+
+    style BallTree fill:#e3f2fd
+    style HybridScore fill:#f3e5f5
+    style SpotifyEmbed fill:#e8f5e8
+    style CacheIndex fill:#fff3e0

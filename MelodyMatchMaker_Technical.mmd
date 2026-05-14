@@ -1,0 +1,35 @@
+stateDiagram-v2
+    [*] --> DataIngestion
+    DataIngestion --> Preprocessing: Load CSV files
+    Preprocessing --> FeatureEngineering: Extract 9 audio features
+    FeatureEngineering --> Normalization: StandardScaler
+    Normalization --> IndexBuilding: BallTree construction
+
+    IndexBuilding --> Ready: Index cached in memory
+
+    Ready --> UserQuery: Track selection
+    UserQuery --> NearestNeighborSearch: BallTree.query(k=6)
+    NearestNeighborSearch --> HybridScoring: Similarity + Popularity
+    HybridScoring --> Ranking: Sort by score
+    Ranking --> Results: Top 5 recommendations
+    Results --> Display: UI with Spotify embeds
+
+    Display --> [*]
+
+    note right of IndexBuilding
+        One-time operation
+        ~4,831 tracks indexed
+        O(n log n) build time
+    end note
+
+    note right of NearestNeighborSearch
+        O(log n) query time
+        ~0.004s average
+        Returns distances + indices
+    end note
+
+    note right of HybridScoring
+        Score = 0.7 × similarity + 0.3 × popularity
+        Similarity = 1 / (1 + distance)
+        Popularity = track_popularity / 100
+    end note

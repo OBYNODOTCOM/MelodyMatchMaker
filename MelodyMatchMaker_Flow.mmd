@@ -1,0 +1,30 @@
+flowchart TD
+    User[👤 User] --> Search[🔍 Search Bar<br/>Filter by Title/Artist/Album/Genre]
+    Search --> Select[📋 Track Selection<br/>Dropdown from Filtered Results]
+    Select --> Query[⚡ Recommendation Query<br/>User selects track]
+
+    Query --> BallTree[🌳 Ball Tree Index<br/>Precomputed Nearest Neighbor Search]
+    BallTree --> KNN[K-Nearest Neighbors<br/>Find 6 similar tracks]
+
+    KNN --> HybridScore[⚖️ Hybrid Scoring<br/>70% Audio Similarity<br/>30% Popularity Weight]
+    HybridScore --> Rank[📊 Ranking<br/>Sort by combined score]
+    Rank --> Top5[🎵 Top 5 Recommendations]
+
+    Top5 --> Display[📱 Display Results<br/>Track details + Spotify embeds]
+    Display --> Spotify[🎧 Spotify Player<br/>30-second previews]
+
+    Spotify --> User
+
+    subgraph "Data Pipeline"
+        CSV[📄 CSV Files] --> Load[📥 Data Loading]
+        Load --> Clean[🧹 Data Cleaning]
+        Clean --> Features[🎼 Feature Extraction<br/>9 audio features]
+        Features --> Scale[📏 StandardScaler<br/>Normalize features]
+        Scale --> Index[🏗️ Ball Tree Build<br/>One-time preprocessing]
+    end
+
+    Index -.-> BallTree
+
+    style BallTree fill:#e3f2fd
+    style HybridScore fill:#f3e5f5
+    style Spotify fill:#e8f5e8
