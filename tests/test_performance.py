@@ -1,3 +1,10 @@
+import sys
+from pathlib import Path
+
+# Ensure the project root is on sys.path when running the file directly.
+ROOT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT_DIR))
+
 import pytest
 
 from melody_core import build_tree, get_recommendations, load_data

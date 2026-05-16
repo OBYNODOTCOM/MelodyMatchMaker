@@ -1,0 +1,45 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+
+    - name: Check formatting with Black
+      run: black --check --diff .
+
+    - name: Check import sorting with isort
+      run: isort --check-only --diff .
+
+    - name: Lint with flake8
+      run: flake8 . --count --show-source --statistics
+      continue-on-error: true
+
+    - name: Type checking with mypy
+      run: mypy . --ignore-missing-imports
+      continue-on-error: true
+
+    - name: Lint with pylint
+      run: |
+        pylint **/*.py --disable=all --enable=E,F,W
+      continue-on-error: true
