@@ -61,6 +61,7 @@ This ensures both musically similar and popular tracks are recommended.# MelodyM
 
 # How to use the app
 Step 1: Launch the app by tapping on the app link
+
 Step 2: As a new user, sign up by entering your choice username, email, password, repeat password and select “create account”. A returning user would just enter the username and password only to login
 Step 3: The recommender page opens automatically on sign-up or login
 Step 4: You can proceed to search for any song by typing the genre, name of artist, song title or year in the search bar and select “Apply search” or “Generate recommendations”
