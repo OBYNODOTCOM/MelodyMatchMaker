@@ -58,3 +58,13 @@ Recommendations are scored as:
 This ensures both musically similar and popular tracks are recommended.# MelodyMatchMaker
 # MelodyMatchMaker
 # MelodyMatchMaker
+
+# How to use the app
+Step 1: Launch the app by tapping on the app link
+Step 2: As a new user, sign up by entering your choice username, email, password, repeat password and select “create account”. A returning user would just enter the username and password only to login
+Step 3: The recommender page opens automatically on sign-up or login
+Step 4: You can proceed to search for any song by typing the genre, name of artist, song title or year in the search bar and select “Apply search” or “Generate recommendations”
+Step 5: It displays the top-10 related songs in less than 0.005 seconds
+Step 6: You can select the play button on any of the songs to play them. Note that they can all be played simultaneously
+Step 7: You can repeat steps 4 to 6 to obtain new songs and your search history is saved.
+Step 8: When you search for a song and it returns “No tracks found matching your search. Try a different query”,  it simply means that your song isn’t available on the app yet. 

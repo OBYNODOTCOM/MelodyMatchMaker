@@ -39,10 +39,7 @@ if 'search_history' not in st.session_state:
     st.session_state.search_history = []
 
 if st.session_state.remembered_user and not st.session_state.logged_in_user:
-    if st.session_state.remembered_user in st.session_state.users:
-        st.session_state.logged_in_user = st.session_state.remembered_user
-        st.session_state.auth_message = "Auto logged in from remembered device."
-    else:
+    if st.session_state.remembered_user not in st.session_state.users:
         st.session_state.remembered_user = None
         clear_remembered_user()
 
@@ -64,6 +61,11 @@ else:
 if not st.session_state.logged_in_user:
     st.write("## User Account")
     st.write("Please login or sign up to use MelodyMatchMaker.")
+    if st.session_state.remembered_user:
+        st.info(
+            f"Previously remembered user '{st.session_state.remembered_user}' found. "
+            "Please login again or choose 'Forget Me' after login to clear the remembered account."
+        )
     with st.form(key="auth_form"):
         if auth_mode == "Login":
             identifier = st.text_input("Username or Email", key="login_id")
